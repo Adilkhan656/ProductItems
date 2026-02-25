@@ -20,22 +20,24 @@ class ProductRepo {
         val call = RetrofitClient.apiInterface.getproduct()
         call.enqueue(object : Callback<product>{
             override fun onResponse(
-                call: Call<product?>?,
-                response: Response<product?>?
+                call: Call<product>,
+                response: Response<product>
             ) {
-               if (response?.isSuccessful == true){
-                   isLoading.value = false
-                   val myproduct = response.body()
-                   productList.value = myproduct?.product as List<productItems>?
-               }
+                isLoading.value = false
+                if (response.isSuccessful) {
+                    productList.value = response.body()?.product ?: emptyList()
+                } else {
+                    productList.value = emptyList()
+                }
             }
 
             override fun onFailure(
-                call: Call<product?>?,
-                t: Throwable?
+                call: Call<product>,
+                t: Throwable
             ) {
                 isLoading.value = false
-                Log.d("myProduct", "onFailure: ${t?.message}")
+                productList.value = emptyList()
+                Log.d("myProduct", "onFailure: ${t.message}")
             }
 
         })

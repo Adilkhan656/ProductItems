@@ -7,7 +7,7 @@
     <data>
 <variable
     name="myViewModel"
-    type="com.example.dummyjsonapp.ViewModel.ProductViewModel" />
+    type="com.example.dummyjsonapp.viewmodel.ProductViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -17,47 +17,18 @@
         android:background="#F4F7FB"
         tools:context=".View.ProductActivity">
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/headerCard"
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topAppBar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="16dp"
-            app:cardBackgroundColor="#FFFFFF"
-            app:cardCornerRadius="24dp"
-            app:cardElevation="0dp"
+            android:background="#FFFFFF"
+            android:minHeight="64dp"
+            app:elevation="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:strokeColor="#D9E3F1"
-            app:strokeWidth="1dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="18dp">
-
-                <TextView
-                    android:id="@+id/tvScreenTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Products"
-                    android:textColor="#0D1B2A"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tvScreenSubtitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text="Discover top-rated picks from DummyJSON"
-                    android:textColor="#5D6B7B"
-                    android:textSize="13sp" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
+            app:title="Products"
+            app:titleTextColor="#0D1B2A" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvProducts"
@@ -72,7 +43,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/headerCard"
+            app:layout_constraintTop_toBottomOf="@id/topAppBar"
             tools:itemCount="6"
             tools:listitem="@layout/item_product_card" />
 

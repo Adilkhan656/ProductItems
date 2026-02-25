@@ -7,7 +7,7 @@
     <data>
 <variable
     name="myViewModel"
-    type="com.example.dummyjsonapp.ViewModel.ProductDetailViewModel" />
+    type="com.example.dummyjsonapp.viewmodel.ProductDetailViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -3,6 +3,7 @@ package com.example.dummyjsonapp.adapter
 import android.graphics.Color
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.example.dummyjsonapp.databinding.ItemProductCardBinding
 import com.example.dummyjsonapp.datas.productItems
 import java.util.Locale
@@ -68,10 +69,12 @@ class ProductRecyclerViewAdapter(
                 if (product.stock > 0) Color.parseColor("#2A7A2A") else Color.parseColor("#B3261E")
             )
 
-            // Image loading from URL requires Glide/Coil/Picasso.
-            // Keep placeholder for now until you wire an image loader.
-            binding.ivThumbnail.setImageDrawable(null)
-            binding.ivThumbnail.setBackgroundColor(Color.parseColor("#DDE7F2"))
+            val imageUrl = product.thumbnail.ifBlank { product.images.firstOrNull().orEmpty() }
+            binding.ivThumbnail.load(imageUrl) {
+                crossfade(true)
+                placeholder(android.R.color.darker_gray)
+                error(android.R.color.darker_gray)
+            }
 
             binding.cardRoot.setOnClickListener { onProductClick(product) }
         }
