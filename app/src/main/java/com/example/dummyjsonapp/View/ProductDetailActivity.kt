@@ -46,6 +46,9 @@ class ProductDetailActivity : AppCompatActivity() {
             error(android.R.color.darker_gray)
         }
 
+
+
+
         tvDetailTitle.text = product.title
         tvDetailDescription.text = product.description
         tvDetailPrice.text = String.format(Locale.US, "$%.2f", product.price)
