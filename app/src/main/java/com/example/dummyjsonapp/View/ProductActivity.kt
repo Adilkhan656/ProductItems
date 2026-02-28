@@ -8,7 +8,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.example.dummyjsonapp.Factory.ProductFactory
 import com.example.dummyjsonapp.R
 import com.example.dummyjsonapp.viewmodel.ProductViewModel
@@ -16,6 +19,9 @@ import com.example.dummyjsonapp.adapter.ProductRecyclerViewAdapter
 import com.example.dummyjsonapp.databinding.ActivityMainBinding
 import com.google.gson.Gson
 import com.example.dummyjsonapp.repo.ProductRepo
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+import androidx.paging.LoadState
 
 class ProductActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -40,15 +46,25 @@ class ProductActivity : AppCompatActivity() {
         }
         binding.rvProducts.adapter = productAdapter
 
-        viewModel.isLoading.observe(this) { isLoading ->
-            binding.pbLoading.visibility = if (isLoading) View.VISIBLE else View.GONE
-            binding.tvError.visibility = View.GONE
-        }
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    viewModel.products.collectLatest { pagingData ->
+                        productAdapter.submitData(pagingData)
+                    }
+                }
 
-        viewModel.getproduct().observe(this) { products ->
-            val list = products ?: emptyList()
-            productAdapter.submitList(list)
-            if (list.isEmpty()) binding.tvError.visibility = View.VISIBLE
+                launch {
+                    productAdapter.loadStateFlow.collectLatest { loadState ->
+                        val isLoading = loadState.refresh is LoadState.Loading
+                        val isError = loadState.refresh is LoadState.Error
+                        val isEmpty = loadState.refresh is LoadState.NotLoading && productAdapter.itemCount == 0
+
+                        binding.pbLoading.visibility = if (isLoading) View.VISIBLE else View.GONE
+                        binding.tvError.visibility = if (isError || isEmpty) View.VISIBLE else View.GONE
+                    }
+                }
+            }
         }
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->

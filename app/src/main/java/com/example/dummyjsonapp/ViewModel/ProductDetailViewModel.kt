@@ -3,12 +3,11 @@ package com.example.dummyjsonapp.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.dummyjsonapp.datas.productItems
-import com.example.dummyjsonapp.repo.ProductRepo
 import java.util.Locale
 
-class ProductDetailViewModel(val myrepo: ProductRepo) : ViewModel() {
+class ProductDetailViewModel : ViewModel() {
 
-    val isLoading: MutableLiveData<Boolean> = myrepo.isLoading
+    val isLoading: MutableLiveData<Boolean> = MutableLiveData(false)
     val selectedProduct: MutableLiveData<productItems> = MutableLiveData()
 
     val title: MutableLiveData<String> = MutableLiveData()

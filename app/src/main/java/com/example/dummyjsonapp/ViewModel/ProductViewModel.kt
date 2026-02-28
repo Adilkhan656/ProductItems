@@ -1,18 +1,15 @@
 package com.example.dummyjsonapp.viewmodel
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.example.dummyjsonapp.datas.productItems
 import com.example.dummyjsonapp.repo.ProductRepo
+import kotlinx.coroutines.flow.Flow
 
 class ProductViewModel(val productRepo: ProductRepo): ViewModel() {
-var isLoading: MutableLiveData<Boolean> = MutableLiveData(true)
-    init {
-       isLoading =  productRepo.isLoading
-    }
+    val products: Flow<PagingData<productItems>> =
+        productRepo.getProductsPager().cachedIn(viewModelScope)
 
-    fun getproduct(): MutableLiveData<List<productItems>>{
-        return productRepo.getproduct()
-
-    }
 }

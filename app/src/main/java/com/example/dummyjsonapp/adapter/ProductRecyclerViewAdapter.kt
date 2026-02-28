@@ -2,6 +2,8 @@ package com.example.dummyjsonapp.adapter
 
 import android.graphics.Color
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.dummyjsonapp.databinding.ItemProductCardBinding
@@ -11,9 +13,7 @@ import java.util.Locale
 class ProductRecyclerViewAdapter(
     private val onProductClick: (productItems) -> Unit
 ) :
-    RecyclerView.Adapter<ProductRecyclerViewAdapter.MyViewHolder>() {
-
-    private val productList: MutableList<productItems> = mutableListOf()
+    PagingDataAdapter<productItems, ProductRecyclerViewAdapter.MyViewHolder>(DiffCallback) {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -31,19 +31,19 @@ class ProductRecyclerViewAdapter(
         holder: MyViewHolder,
         position: Int
     ) {
-        val product = productList[position]
-        holder.bind(product, onProductClick)
-
+        getItem(position)?.let { holder.bind(it, onProductClick) }
     }
 
-    override fun getItemCount(): Int {
-        return productList.size
-    }
+    companion object {
+        private val DiffCallback = object : DiffUtil.ItemCallback<productItems>() {
+            override fun areItemsTheSame(oldItem: productItems, newItem: productItems): Boolean {
+                return oldItem.id == newItem.id
+            }
 
-    fun submitList(items: List<productItems>) {
-        productList.clear()
-        productList.addAll(items)
-        notifyDataSetChanged()
+            override fun areContentsTheSame(oldItem: productItems, newItem: productItems): Boolean {
+                return oldItem == newItem
+            }
+        }
     }
 
 

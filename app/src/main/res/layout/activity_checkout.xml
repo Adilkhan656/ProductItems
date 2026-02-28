@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/checkoutRoot"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#F4F7FB">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/checkoutToolbar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF"
+            android:elevation="0dp"
+            android:minHeight="56dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:navigationIcon="@android:drawable/ic_menu_revert"
+            app:title="Order Summary"
+            app:titleTextColor="#0D1B2A" />
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/checkoutScroll"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:padding="14dp"
+            app:layout_constraintBottom_toTopOf="@id/btnPay"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/checkoutToolbar">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardBackgroundColor="#FFFFFF"
+                    app:cardCornerRadius="18dp"
+                    app:cardElevation="0dp"
+                    app:strokeColor="#DCE5F0"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="14dp">
+
+                        <ImageView
+                            android:id="@+id/ivCheckoutImage"
+                            android:layout_width="match_parent"
+                            android:layout_height="200dp"
+                            android:contentDescription="Product image"
+                            android:scaleType="centerCrop"
+                            tools:src="@tools:sample/avatars" />
+
+                        <TextView
+                            android:id="@+id/tvCheckoutTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:textColor="#0D1B2A"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            tools:text="Apple AirPods Max" />
+
+                        <TextView
+                            android:id="@+id/tvCheckoutBrand"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="3dp"
+                            android:textColor="#6E7A89"
+                            android:textSize="13sp"
+                            tools:text="Brand: Apple | SKU: APP-123" />
+
+                        <TextView
+                            android:id="@+id/tvCheckoutPrice"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:textColor="#0D1B2A"
+                            android:textSize="22sp"
+                            android:textStyle="bold"
+                            tools:text="$399.99" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Quantity"
+                                android:textColor="#0D1B2A"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="12dp"
+                                android:background="#EEF3FA"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal"
+                                android:padding="4dp">
+
+                                <com.google.android.material.button.MaterialButton
+                                    android:id="@+id/btnCheckoutMinus"
+                                    style="@style/Widget.Material3.Button.OutlinedButton"
+                                    android:layout_width="40dp"
+                                    android:layout_height="40dp"
+                                    android:insetTop="0dp"
+                                    android:insetBottom="0dp"
+                                    android:minWidth="0dp"
+                                    android:text="-"
+                                    android:textSize="18sp"
+                                    app:cornerRadius="10dp" />
+
+                                <TextView
+                                    android:id="@+id/tvCheckoutQty"
+                                    android:layout_width="50dp"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:text="1"
+                                    android:textColor="#0D1B2A"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold" />
+
+                                <com.google.android.material.button.MaterialButton
+                                    android:id="@+id/btnCheckoutPlus"
+                                    style="@style/Widget.Material3.Button.OutlinedButton"
+                                    android:layout_width="40dp"
+                                    android:layout_height="40dp"
+                                    android:insetTop="0dp"
+                                    android:insetBottom="0dp"
+                                    android:minWidth="0dp"
+                                    android:text="+"
+                                    android:textSize="18sp"
+                                    app:cornerRadius="10dp" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    app:cardBackgroundColor="#FFFFFF"
+                    app:cardCornerRadius="18dp"
+                    app:cardElevation="0dp"
+                    app:strokeColor="#DCE5F0"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="14dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Payment Details"
+                            android:textColor="#0D1B2A"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tvCheckoutSubtotal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:textColor="#3B495A"
+                            tools:text="Subtotal: $799.98" />
+
+                        <TextView
+                            android:id="@+id/tvCheckoutShipping"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:textColor="#3B495A"
+                            tools:text="Shipping: Free" />
+
+                        <TextView
+                            android:id="@+id/tvCheckoutTotal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:textColor="#0D1B2A"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            tools:text="Total: $799.98" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnPay"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_marginEnd="14dp"
+            android:layout_marginBottom="14dp"
+            android:text="Pay"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
