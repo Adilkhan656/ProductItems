@@ -10,17 +10,21 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import coil.load
 import com.example.dummyjsonapp.R
 import com.example.dummyjsonapp.databinding.ActivityProductDetailBinding
 import com.example.dummyjsonapp.datas.Review
 import com.example.dummyjsonapp.datas.productItems
+import com.example.dummyjsonapp.viewmodel.ProductDetailViewModel
 import com.google.gson.Gson
 import java.util.Locale
 
 class ProductDetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityProductDetailBinding
+    private lateinit var productDetailViewModel: ProductDetailViewModel
     private var quantity: Int = 1
     private var currentProduct: productItems? = null
 
@@ -33,6 +37,11 @@ class ProductDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = DataBindingUtil.setContentView(this, R.layout.activity_product_detail)
+        productDetailViewModel = ViewModelProvider(this)[ProductDetailViewModel::class.java]
+        ViewCompat.setOnApplyWindowInsetsListener(binding.toolbar) { view, insets ->
+            view.updatePadding(top = insets.getInsets(WindowInsetsCompat.Type.statusBars()).top)
+            insets
+        }
 
         val productJson = intent.getStringExtra(EXTRA_PRODUCT_JSON)
         val product = productJson?.let { Gson().fromJson(it, productItems::class.java) }
@@ -46,13 +55,13 @@ class ProductDetailActivity : AppCompatActivity() {
             setupActionButtons(product, productJson)
         }
 
-        binding.toolbar.setNavigationOnClickListener { finish() }
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.detailRoot)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+        productDetailViewModel.cartMessage.observe(this) { message ->
+            if (!message.isNullOrBlank()) {
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+            }
         }
+
+        binding.toolbar.setNavigationOnClickListener { finish() }
     }
 
     private fun setupQuantityActions(product: productItems) {
@@ -75,7 +84,7 @@ class ProductDetailActivity : AppCompatActivity() {
 
     private fun setupActionButtons(product: productItems, productJson: String?) {
         binding.btnAddToCart.setOnClickListener {
-            Toast.makeText(this, "Added $quantity item(s) to cart", Toast.LENGTH_SHORT).show()
+            productDetailViewModel.addToCart(product, quantity)
         }
 
         binding.btnProceed.setOnClickListener {

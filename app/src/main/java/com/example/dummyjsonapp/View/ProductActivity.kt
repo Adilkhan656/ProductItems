@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
@@ -33,6 +34,11 @@ class ProductActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.lifecycleOwner = this
 
+        ViewCompat.setOnApplyWindowInsetsListener(binding.topAppBar) { view, insets ->
+            view.updatePadding(top = insets.getInsets(WindowInsetsCompat.Type.statusBars()).top)
+            insets
+        }
+
         val repository = ProductRepo()
         val factory = ProductFactory(repository)
         val viewModel = ViewModelProvider(this, factory)[ProductViewModel::class.java]
@@ -43,6 +49,15 @@ class ProductActivity : AppCompatActivity() {
                     putExtra(ProductDetailActivity.EXTRA_PRODUCT_JSON, Gson().toJson(product))
                 }
             )
+        }
+        binding.topAppBar.inflateMenu(R.menu.menu_product)
+        binding.topAppBar.setOnMenuItemClickListener { menuItem ->
+            if (menuItem.itemId == R.id.action_cart) {
+                startActivity(Intent(this, CartActivity::class.java))
+                true
+            } else {
+                false
+            }
         }
         binding.rvProducts.adapter = productAdapter
 
@@ -67,10 +82,5 @@ class ProductActivity : AppCompatActivity() {
             }
         }
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
     }
 }

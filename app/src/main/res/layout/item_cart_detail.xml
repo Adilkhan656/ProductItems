@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    app:cardBackgroundColor="#FFFFFF"
+    app:cardCornerRadius="18dp"
+    app:cardElevation="0dp"
+    app:strokeColor="#DCE5F0"
+    app:strokeWidth="1dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/ivCartImage"
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:contentDescription="Cart item image"
+            android:scaleType="centerCrop"
+            tools:src="@tools:sample/avatars" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="14dp">
+
+            <TextView
+                android:id="@+id/tvCartTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#0D1B2A"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                tools:text="Apple AirPods Max" />
+
+            <TextView
+                android:id="@+id/tvCartDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:textColor="#556274"
+                android:textSize="13sp"
+                tools:text="High-fidelity over-ear headphones" />
+
+            <TextView
+                android:id="@+id/tvCartPrice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textColor="#0D1B2A"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                tools:text="$399.99" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tvCartQty"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="#1A4EA2"
+                    android:textStyle="bold"
+                    tools:text="Qty: 2" />
+
+                <TextView
+                    android:id="@+id/tvCartStock"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#2A7A2A"
+                    android:textStyle="bold"
+                    tools:text="Stock: 45" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvCartBrandCategory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:textColor="#3B495A"
+                tools:text="Brand: Apple  |  Category: audio" />
+
+            <TextView
+                android:id="@+id/tvCartSku"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textColor="#3B495A"
+                tools:text="SKU: APP-123" />
+
+            <TextView
+                android:id="@+id/tvCartShipping"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textColor="#3B495A"
+                tools:text="Shipping: Free shipping" />
+
+            <TextView
+                android:id="@+id/tvCartReturn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textColor="#3B495A"
+                tools:text="Return: 30 days" />
+        </LinearLayout>
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

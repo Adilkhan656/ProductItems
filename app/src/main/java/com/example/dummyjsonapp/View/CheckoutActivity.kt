@@ -6,6 +6,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.databinding.DataBindingUtil
 import coil.load
 import com.example.dummyjsonapp.R
@@ -24,6 +25,10 @@ class CheckoutActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = DataBindingUtil.setContentView(this, R.layout.activity_checkout)
+        ViewCompat.setOnApplyWindowInsetsListener(binding.checkoutToolbar) { view, insets ->
+            view.updatePadding(top = insets.getInsets(WindowInsetsCompat.Type.statusBars()).top)
+            insets
+        }
 
         val productJson = intent.getStringExtra(ProductDetailActivity.EXTRA_PRODUCT_JSON)
         val product = productJson?.let { Gson().fromJson(it, productItems::class.java) }
@@ -38,12 +43,6 @@ class CheckoutActivity : AppCompatActivity() {
         binding.checkoutToolbar.setNavigationOnClickListener { finish() }
         binding.btnPay.setOnClickListener {
             Toast.makeText(this, "Payment flow will be added next", Toast.LENGTH_SHORT).show()
-        }
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.checkoutRoot)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
         }
     }
 

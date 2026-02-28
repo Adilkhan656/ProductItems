@@ -1,62 +1,67 @@
 package com.example.dummyjsonapp.viewmodel
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.dummyjsonapp.datas.productItems
-import java.util.Locale
+import com.example.dummyjsonapp.db.AppDatabase
+import com.example.dummyjsonapp.db.CartItemEntity
+import com.google.gson.Gson
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-class ProductDetailViewModel : ViewModel() {
+class ProductDetailViewModel(application: Application) : AndroidViewModel(application) {
 
-    val isLoading: MutableLiveData<Boolean> = MutableLiveData(false)
-    val selectedProduct: MutableLiveData<productItems> = MutableLiveData()
+    private val cartDao = AppDatabase.getInstance(application).cartDao()
+    private val gson = Gson()
 
-    val title: MutableLiveData<String> = MutableLiveData()
-    val description: MutableLiveData<String> = MutableLiveData()
-    val brand: MutableLiveData<String> = MutableLiveData()
-    val category: MutableLiveData<String> = MutableLiveData()
-    val priceText: MutableLiveData<String> = MutableLiveData()
-    val discountText: MutableLiveData<String> = MutableLiveData()
-    val ratingText: MutableLiveData<String> = MutableLiveData()
-    val stockText: MutableLiveData<String> = MutableLiveData()
-    val availabilityStatus: MutableLiveData<String> = MutableLiveData()
-    val thumbnailUrl: MutableLiveData<String> = MutableLiveData()
-    val shippingInfo: MutableLiveData<String> = MutableLiveData()
-    val returnPolicy: MutableLiveData<String> = MutableLiveData()
-    val warrantyInfo: MutableLiveData<String> = MutableLiveData()
-    val skuText: MutableLiveData<String> = MutableLiveData()
-    val minOrderQtyText: MutableLiveData<String> = MutableLiveData()
-    val weightText: MutableLiveData<String> = MutableLiveData()
-    val tagsText: MutableLiveData<String> = MutableLiveData()
-    val dimensionsText: MutableLiveData<String> = MutableLiveData()
-    val reviewsCountText: MutableLiveData<String> = MutableLiveData()
+    private val _cartMessage = MutableLiveData<String>()
+    val cartMessage: LiveData<String> = _cartMessage
 
-    fun setProduct(product: productItems) {
-        selectedProduct.value = product
+    fun addToCart(product: productItems, selectedQuantity: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val existingItem = cartDao.getByProductId(product.id)
+                val mergedQuantity = (existingItem?.quantity ?: 0) + selectedQuantity
 
-        title.value = product.title
-        description.value = product.description
-        brand.value = product.brand
-        category.value = product.category
-        priceText.value = String.format(Locale.US, "$%.2f", product.price)
-        discountText.value = String.format(Locale.US, "-%.1f%%", product.discountPercentage)
-        ratingText.value = String.format(Locale.US, "%.1f", product.rating)
-        stockText.value = product.stock.toString()
-        availabilityStatus.value = product.availabilityStatus
-        thumbnailUrl.value = product.thumbnail
-        shippingInfo.value = product.shippingInformation
-        returnPolicy.value = product.returnPolicy
-        warrantyInfo.value = product.warrantyInformation
-        skuText.value = product.sku
-        minOrderQtyText.value = product.minimumOrderQuantity.toString()
-        weightText.value = product.weight.toString()
-        tagsText.value = product.tags.joinToString(", ")
-        dimensionsText.value = String.format(
-            Locale.US,
-            "W: %.1f  H: %.1f  D: %.1f",
-            product.dimensions.width,
-            product.dimensions.height,
-            product.dimensions.depth
-        )
-        reviewsCountText.value = product.reviews.size.toString()
+                cartDao.upsert(
+                    CartItemEntity(
+                        product.id,
+                        product.title,
+                        product.description,
+                        product.brand,
+                        product.category,
+                        product.price,
+                        product.discountPercentage,
+                        product.rating,
+                        product.stock,
+                        product.availabilityStatus,
+                        product.thumbnail,
+                        product.shippingInformation,
+                        product.returnPolicy,
+                        product.warrantyInformation,
+                        product.sku,
+                        product.minimumOrderQuantity,
+                        product.weight,
+                        gson.toJson(product.dimensions),
+                        gson.toJson(product.tags),
+                        gson.toJson(product.reviews),
+                        gson.toJson(product.images),
+                        product.meta.barcode,
+                        product.meta.createdAt,
+                        product.meta.updatedAt,
+                        product.meta.qrCode,
+                        mergedQuantity,
+                        System.currentTimeMillis()
+                    )
+                )
+
+                _cartMessage.postValue("Added to cart")
+            } catch (_: Exception) {
+                _cartMessage.postValue("Unable to add item to cart")
+            }
+        }
     }
 }
